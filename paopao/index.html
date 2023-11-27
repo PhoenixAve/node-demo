@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+  <title>Document</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.7.8/vue.min.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0
+    }
+
+    .wrapper {
+      margin: 0 auto;
+      width: 90%;
+    }
+
+    .container {
+      position: relative;
+    }
+
+    .item {
+      position: absolute;
+      top: 0;
+      left: 0;
+      transform: scale(0.8);
+      transform-origin: center;
+      border-radius: 16px;
+      text-align: center;
+      transition: 400ms linear;
+      border: 1px solid pink;
+      background-color: yellow;
+      box-sizing: border-box;
+      opacity: 0.5;
+      overflow: hidden;
+    }
+
+    .group-item {
+      position: absolute;
+      border-radius: 8px;
+      text-align: center;
+      border: 1px solid pink;
+      background-color: rgba(0, 128, 0, 0.4);
+      box-sizing: border-box;
+      font-size: 20px;
+    }
+
+    .item .content {
+      position: absolute;
+      bottom: 6px;
+      width: 100%;
+      padding: 0 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      text-align: bottom;
+      box-sizing: border-box;
+    }
+
+    .item .title,
+    .item .count {
+      font-weight: bold;
+      line-height: 1em;
+    }
+
+    .item .title {
+      font-size: 16px;
+      flex: 1;
+      text-align: left;
+      min-width: 2em;
+    }
+
+    .item .count {
+      font-size: 12px;
+      padding-right: 12px;
+      text-align: right;
+      position: relative;
+      margin-left: 20px;
+    }
+
+    .item .count::before {
+      content: '票';
+      position: absolute;
+      font-size: 12px;
+      transform: scale(0.8);
+      transform-origin: center 80%;
+      font-weight: normal;
+      color: #666;
+      right: 0;
+      bottom: 0;
+    }
+
+    .done .item {
+      transform: scale(1);
+    }
+
+    .flex-all-center {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+  </style>
+
+<body>
+  <div id="app" :class="{done: done}">
+    <div>
+      <h1>{{title}}<button @click="random">动起来</button><button @click="reset">重置</button></h1>
+
+    </div>
+    <div class="wrapper flex-all-center" ref="wrapperRef">
+      <div class="container" :style="{width: containerW + 'px', height: containerH + 'px'}">
+        <div class="item flex-all-center" v-for="item in list" :key="item.count" :style="{ left: item.left + 'px', top: item.top + 'px', height: item.height + 'px', width: item.width + 'px', background: item.color}">
+          <div class="content">
+            <div class="title">{{item.title}}</div>
+            <div class="count">{{item.count}}</div>
+          </div>
+        </div>
+      </div>
+      <!-- <div class="container" :style="{width: containerW, height: containerH}">
+        <div class="group-item flex-all-center" v-for="item in groups" :key="item.name"
+          :style="{ left: item.left + 'px', top: item.top + 'px', height: item.height + 'px', width: item.width + 'px'}">
+          {{item.name}}
+        </div>
+      </div> -->
+    </div>
+  </div>
+  <script src="./index.js"></script>
+  <script>
+    new Vue({
+      el: "#app",
+      data() {
+        return {
+          containerW: 0,
+          containerH: 0,
+          done: false,
+          title: "泡泡堂",
+          list: [],
+          groups: []
+        };
+      },
+      mounted() {
+        this.$nextTick(() => {
+          console.log(this.$refs.wrapperRef)
+          this.containerW = this.$refs.wrapperRef.clientWidth;
+          this.containerH = this.containerW * 2
+          console.log(this.containerW, this.containerH)
+          this.initList()
+        })
+      },
+      methods: {
+        reset() {
+          this.initList()
+          this.done = false
+        },
+        initList() {
+          this.list = [];
+          const list = [{
+              "title": "标题0",
+              "color": "green",
+              "count": 215,
+            },
+            {
+              "title": "标题1",
+              "color": "yellowgreen",
+              "count": 348,
+            },
+            {
+              "title": "标题2",
+              "color": "yellowgreen",
+              "count": 0,
+            },
+            {
+              "title": "标题3",
+              "color": "purple",
+              "count": 301,
+            },
+            {
+              "title": "标题4",
+              "color": "pink",
+              "count": 435,
+            },
+            {
+              "title": "标题5",
+              "color": "red",
+              "count": 12,
+            },
+            {
+              "title": "标题6",
+              "color": "yellowgreen",
+              "count": 283,
+            },
+            {
+              "title": "标题7",
+              "color": "pink",
+              "count": 78,
+            },
+            {
+              "title": "标题8",
+              "color": "orange",
+              "count": 290,
+            },
+            {
+              "title": "标题9",
+              "color": "green",
+              "count": 238,
+            },
+            {
+              "title": "标题10",
+              "color": "red",
+              "count": 360,
+            },
+            {
+              "title": "标题11",
+              "color": "purple",
+              "count": 308,
+            },
+            {
+              "title": "标题12",
+              "color": "purple",
+              "count": 310,
+            },
+            {
+              "title": "标题13",
+              "color": "pink",
+              "count": 36,
+            },
+            {
+              "title": "标题14",
+              "color": "red",
+              "count": 420,
+            },
+            {
+              "title": "标题15",
+              "color": "green",
+              "count": 59,
+            },
+            {
+              "title": "标题16",
+              "color": "yellowgreen",
+              "count": 74,
+            },
+            {
+              "title": "标题17",
+              "color": "pink",
+              "count": 297,
+            }
+          ];
+          for (let i = 0; i < 18; i++) {
+            this.list.push({
+              title: `标题${i}`,
+              color: colors[getRandom(0, colors.length - 1)],
+              count: getRandom(),
+              width: this.containerW / 3,
+              height: this.containerW / 3,
+              left: (i % 3) * this.containerW / 3,
+              top: Math.floor(i / 3) * this.containerW / 3,
+              ...list[i]
+            });
+          }
+        },
+        random() {
+          const layout = getLayout()
+          const parent = {
+            left: 0,
+            top: 0,
+            width: percentToPx("100%", this.containerW),
+            height: percentToPx("100%", this.containerH),
+            direction: "portrait",
+            childrenLength: layout.length,
+          };
+          this.groups = [parent];
+          this.getPosition(layout, parent);
+          this.done = true;
+          console.log(this.list)
+        },
+        getPosition(layout, parent) {
+          // 纵向的，只需要计算高度，如果只有一个元素，则高度100%
+          // 横向的，只需要计算宽度，如果只有一个元素，则宽度100%
+          // 如果type为node，则表明是最小单位了，则需要根据index获得数量，然后往上一层和同级别的组进行比较得出宽（横向）高（纵向）
+          // 但是所有的宽高都计算完之后，还是百分比的，如何计算具体位置呢
+          const childNodes = []
+          layout.forEach((item, index) => {
+            if (item.type === "group") {
+              const current = {
+                left: 0,
+                top: 0,
+                width: percentToPx(item.width, parent.width),
+                height: percentToPx(item.height, parent.height),
+                direction: item.direction,
+                childrenLength: item.children.length,
+              };
+              const preItem = index === 0 ? null : layout[index - 1];
+              // 组
+              // 横纵向分布都按照设置来
+              if (parent.direction === "horizontal") {
+                current.left =
+                  index === 0 ?
+                  parent.left :
+                  preItem.left + percentToPx(preItem.width, parent.width);
+                current.top = parent.top;
+              } else {
+                current.left = parent.left;
+                current.top =
+                  index === 0 ?
+                  parent.top :
+                  preItem.top + percentToPx(preItem.height, parent.height);
+              }
+              item.left = current.left;
+              item.top = current.top;
+              this.groups.push(current);
+              item.nodeTotal = 0;
+              if (item.children && item.children.length > 0) {
+                if (item.children[0].type === "node") {
+                  item.nodeTotal = this.getProcessedTotal(item.children)
+                }
+                current.nodeTotal = item.nodeTotal;
+                this.getPosition(item.children, current);
+              }
+            } else {
+              const listItem = this.list[item.index];
+              const preItem = index === 0 ? null : this.list[layout[index - 1].index];
+              if (parent.direction === "horizontal") {
+                // 节点横向排布，计算宽度
+                listItem.left =
+                  index === 0 ?
+                  parent.left :
+                  preItem.left + percentToPx(preItem.width, parent.width);
+                listItem.top = parent.top;
+                listItem.width = percentToPx(
+                  this.getPercent(listItem.count, parent.nodeTotal),
+                  parent.width
+                );
+                listItem.height = percentToPx("100%", parent.height);
+              } else if (parent.direction === "portrait") {
+                // 节点纵向排布，计算宽度
+                listItem.left = parent.left;
+                listItem.top =
+                  index === 0 ?
+                  parent.top :
+                  preItem.top + percentToPx(preItem.height, parent.height);
+                listItem.width = percentToPx("100%", parent.width);
+                listItem.height = percentToPx(
+                  this.getPercent(listItem.count, parent.nodeTotal),
+                  parent.height
+                );
+
+              }
+              childNodes.push(listItem);
+            }
+          });
+        },
+        // 获取特殊处理过的总值，为了避免差距太大
+        getProcessedTotal(nodes) {
+          let total = 0
+          nodes.forEach((v) => {
+            total += Math.sqrt(this.list[v.index].count || 1);
+          });
+          return total
+        },
+        getPercent(cur, total) {
+          // cur 如果为0，则按1进行计算
+          return (Math.sqrt(cur || 1) / total) * 100 + "%"
+        }
+      }
+    });
+
+  </script>
+</body>
+
+</html>

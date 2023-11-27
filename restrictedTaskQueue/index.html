@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .container {
+      border: 1px solid #000;
+      /* height: 300px;
+      overflow: auto; */
+    }
+    .inline-block {
+      display: inline-block;
+      width: 120px;
+      height: 24px;
+      background-size: cover;
+      border: 1px solid greenyellow;
+      font-size: 12px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="wrapper" style="text-align: center;">
+    <h1 class="h1"></h1>
+    <h1 class="h2"></h1>
+    <div><button onclick="runTask()">点击从新开始渲染</button></div>
+    <div class="container">
+      
+    </div>
+  </div>
+  <script src="https://s3plus.meituan.com/v1/mss_0a7f4c7b6e8342d9985d10a078f28f6f/production/script/libs/echarts.5.3.1.min.js"></script>
+  <script src="./index.js"></script>
+  <script src="./taskQueue.js"></script>
+  <script src="./bitmapLine.js"></script>
+  <script>
+    window.startTime = Date.now();
+    const domLength = 500;
+    </script>
+    <script src="./createDom.js"></script>
+  <script>
+    // 一个任务队列
+    console.log('程序开始执行');
+    const doms = document.querySelectorAll('.inline-block');
+    const tasks = []
+    for (let i = 0; i < domLength; i++) {
+      tasks.push((resolve) => {
+        doms[i].style.border = '1px solid orange';
+        window.bitmapLine.update(url => {
+          doms[i].style.backgroundImage = `url(${url})`;
+          resolve && resolve(url);
+        })
+      })
+    }
+    console.log('添加任务耗时---->', Date.now() - startTime);
+  </script>
+  <script src="./queue.js"></script>
+  <!-- <script src="./queueTask.js"></script> -->
+  <!-- <script src="./requestIdleCallback.js"></script> -->
+  <!-- <script src="./sync.js"></script> -->
+  <!-- <script src="./queueMicrotask.js"></script> -->
+  <!-- <script src="./setTimeout.js"></script> -->
+  <script src="./renderDom.js"></script>
+</body>
+
+</html>

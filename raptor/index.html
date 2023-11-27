@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>博客</title>
+  <!-- <link href="./css/element.css" rel="stylesheet"> -->
+  <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/element-ui/2.15.10/theme-chalk/index.css">
+  <link rel="stylesheet" href="./css/vue-json-pretty.css" />
+  <link rel="stylesheet" href="./css/style.css" />
+</head>
+
+<body>
+  <div class="container">
+    <el-card>
+      <el-upload v-if="!file" class="upload-btn" drag accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" :limit="1" :on-change="onChange" :auto-upload="false">
+        <i class="el-icon-upload"></i>
+        <div class="el-upload__text">将文件拖到此处，或<em>点击选择文件</em></div>
+      </el-upload>
+      <div v-if="file">{{file.name}}</div>
+    </el-card>
+    <el-card v-if="tablesMap">
+      <el-tabs v-model="activeName" type="border-card">
+        <el-tab-pane v-for="(value, key) in tablesMap" :label="`错误类型：${key}(${value.tableData.length})`" :name="key">
+          <el-card header="日志数据">
+            <el-table :data="value.tableData" :max-height="400" :border="true" :stripe="true" size="small">
+              <el-table-column v-for="column in columns" :key="column.prop" :prop="column.prop" :label="column.label" show-overflow-tooltip sortable :min-width="column.width">
+                <template v-slot="{row}">
+                  <el-button type="text" v-if="column.prop==='_mt_message'" @click="showMessage(row['_mt_message'])" size="small">查看详情</el-button>
+                  <span v-else>{{row[column.prop]}}</span>
+                </template>
+              </el-table-column>
+            </el-table>
+          </el-card>
+          <el-card header="logContent分类">
+            <el-table :data="value.logContents" :max-height="400" :border="true" :stripe="true" size="small">
+              <el-table-column prop="prop" label="分类" show-overflow-tooltip sortable></el-table-column>
+              <el-table-column prop="count" label="个数" show-overflow-tooltip sortable></el-table-column>
+              <el-table-column prop="percent" label="占比" show-overflow-tooltip sortable></el-table-column>
+            </el-table>
+          </el-card>
+        </el-tab-pane>
+        </mtd-tabs>
+    </el-card>
+    <el-drawer title="详细信息" :visible.sync="visible" :size="1000">
+      <json-tree :raw="currentMessage"></json-tree>
+    </el-drawer>
+  </div>
+  <script src="./js/vue.min.js"></script>
+  <!-- <script src="./js/element.js"></script> -->
+  <script src="https://cdn.bootcdn.net/ajax/libs/element-ui/2.15.10/index.js"></script>
+  <script src="./js/xlsx.full.min.js"></script>
+  <script src="./js/json-tree.js"></script>
+  <!-- <script src="./js/vue-json-pretty.js"></script> -->
+  <script src="./js/index.js"></script>
+</body>
+
+</html>
