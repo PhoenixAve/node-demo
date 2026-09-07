@@ -1,59 +1,51 @@
-// 闭包泄露对象
-       const o1 = (() => {
-           const data = {
-               a: 1,
-               b: 2
-           };
-           return {
-               get: (key) => {
-                   return data[key];
-               }
-           }
-       })();
-       const o2 = (() => { // 判断是否属于原型链属性解决泄露
-           const data = {
-               a: 1,
-               b: 2
-           };
-           return {
-               get: (key) => {
-                   if (data.hasOwnProperty(key)) {
-                       return data[key];
-                   }
-                   return undefined;
-               }
-           }
-       })();
-       const o3 = (() => { // 隔绝原型链解决泄露
-           const data = Object.create({
-               a: 1,
-               b: 2
-           });
-           return {
-               get: (key) => {
-                   return data[key];
-               }
-           }
-       })();
-       const o4 = (() => { // 使用合适的数据类型Map
-           const data = new Map([
-               ['a', 1],
-               ['b', 1]
-           ]);
-           return {
-               get: (key) => {
-                   return data.get(key);
-               }
-           }
-       })();
-       // 添加漏洞打破闭包隔绝
-       Object.defineProperty(Object.prototype, 'all', {
-           get() {
-               console.log(this)
-               return this;
-           }
-       });
-       console.log(o1.get('all')); //泄露会获取data
-       console.log(o2.get('all'));
-       console.log(o3.get('all'));
-       console.log(o4.get('all'));
+const data = [
+        {
+            "source_id": 582,
+            "title": "开篇词+学习路线+架构图",
+            "article_count": 3,
+            "id": "571"
+        },
+        {
+            "source_id": 583,
+            "title": "模块一：JavaScript",
+            "article_count": 15,
+            "id": "572"
+        },
+        {
+            "source_id": 584,
+            "title": "模块二：HTML和CSS",
+            "article_count": 16,
+            "id": "573"
+        },
+        {
+            "source_id": 585,
+            "title": "模块三：浏览器实现原理与API",
+            "article_count": 9,
+            "id": "574"
+        },
+        {
+            "source_id": 586,
+            "title": "模块四：前端综合应用",
+            "article_count": 5,
+            "id": "575"
+        },
+        {
+            "source_id": 587,
+            "title": "特别加餐",
+            "article_count": 8,
+            "id": "576"
+        },
+        {
+            "source_id": 588,
+            "title": "尾声",
+            "article_count": 1,
+            "id": "577"
+        }
+    ]
+
+    const result = {}
+
+    data.forEach(item => {
+        result[item.source_id] = item.title
+    })
+    console.log(JSON.stringfy(result))

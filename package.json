@@ -5,6 +5,9 @@
   "license": "MIT",
   "dependencies": {
     "@types/node": "^17.0.35",
+    "koa": "^2.14.2",
+    "koa-mount": "^4.0.0",
+    "koa-static": "^5.0.0",
     "vue-json-pretty": "^2.2.3"
   }
 }
